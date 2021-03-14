@@ -19,8 +19,8 @@ cd /usr/share/
 git clone https://github.com/45drives/monitoring-stack.git
 ```
 * Included inventory file "hosts" has two groups "metrics" and "exporters"
-    * Any hosts in the "metrics" group will have prometheus,alertmanager and grafana installed
-    * Any hosts in the "exporters" group will have node_exporter and znapzend_exporter installed
+    * All hosts in the "metrics" group will have prometheus,alertmanager and grafana installed
+    * All hosts in the "exporters" group will have node_exporter and znapzend_exporter installed
     * By default "metrics" and "exporters" is populated by localhost. This is sufficient for a single server deployment.
         * To add multiple servers add new hosts in the "exporters" group
         * It is possible to have the metric stack not run on the same server as the exporter services.
