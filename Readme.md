@@ -1,10 +1,12 @@
 # Monitoring Stack
 
-Grafana             : Display Statistics & Metrics from database
-Alertmanager        : Query db of metrics and send alerts based on user defined rules
-Prometheus          : Collect and store metrics scraped frome exporters in database
-Node Exporter       : Export hardware and OS metrics via http endpoint
-Znapzend Exporter   : Export state information on zfs snapshots and replication tasks
+| Service Name      	| Description                                                     	|
+|-------------------	|-----------------------------------------------------------------	|
+| Grafana           	| Display Statistics & Metrics from database                      	|
+| Alertmanager      	| Query db of metrics and send alerts based on user defined rules 	|
+| Prometheus        	| Collect and store metrics scraped frome exporters in database   	|
+| Node Exporter     	| Export hardware and OS metrics via http endpoint                	|
+| ZnapZend Exporter 	| Export state information on zfs snapshots and replication tasks 	|
 
 The services outlined above are deployed as containers using either podman or docker depending on Host OS.
 Containers are managed via systemd services and/or cockpit-podman module
