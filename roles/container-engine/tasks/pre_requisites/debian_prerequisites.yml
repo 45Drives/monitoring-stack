@@ -32,22 +32,22 @@
     - ansible_distribution == 'Ubuntu'
     - ansible_distribution_major_version != '20'
 
-- name: add podman kubic repository
-  apt_repository:
-    repo: "deb https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_{{ ansible_distribution_version }}/ /"
-    filename: kubic-podman
-    state: present
-  when:
-    - container_package_name == 'podman'
-    - ansible_distribution == 'Ubuntu'
-    - ansible_distribution_major_version == '20'
-
 - name: add podman kubic gpg key
   apt_key:
     url: 'https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_{{ ansible_distribution_version }}/Release.key'
     state: present
   register: result
   until: result is succeeded
+  when:
+    - container_package_name == 'podman'
+    - ansible_distribution == 'Ubuntu'
+    - ansible_distribution_major_version == '20'
+
+- name: add podman kubic repository
+  apt_repository:
+    repo: "deb https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_{{ ansible_distribution_version }}/ /"
+    filename: kubic-podman
+    state: present
   when:
     - container_package_name == 'podman'
     - ansible_distribution == 'Ubuntu'
