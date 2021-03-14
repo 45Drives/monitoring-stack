@@ -1,0 +1,11 @@
+groups:
+- name: default
+  rules:
+  - alert: Node Exporter Down
+    expr: up{job="node"} == 0
+    for: 5m
+    labels:
+      severity: page
+    annotations:
+      summary: "Node Exporter Down"
+      description: "No metrics are being collected"

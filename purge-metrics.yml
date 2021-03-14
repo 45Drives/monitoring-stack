@@ -1,0 +1,103 @@
+---
+- name: purge node-exporter
+  hosts:
+    - all
+    
+  become: true
+
+  tasks:
+    - name: set docker_registry value if not set
+      set_fact:
+        docker_registry: "docker.io"
+      when: docker_registry is not defined
+
+    - name: disable node_exporter service
+      service:
+        name: node_exporter
+        state: stopped
+        enabled: no
+      failed_when: false
+
+    - name: remove node-exporter container
+      docker_container:
+        name: node_exporter
+        state: absent
+      failed_when: false
+
+    - name: remove node_exporter service file
+      file:
+        name: /etc/systemd/system/node_exporter.service
+        state: absent
+
+    - name: remove node-exporter image
+      docker_image:
+        image: "{{ docker_registry }}/prom/node-exporter"
+        state: absent
+        force_absent: yes
+      tags:
+        - remove_img
+      failed_when: false
+
+- name: purge ceph grafana-server
+  hosts: metrics
+  become: true
+  vars:
+    grafana_services:
+      - grafana-server
+      - prometheus
+      - alertmanager
+
+  tasks:
+    - name: set docker_registry value if not set
+      set_fact:
+        docker_registry: "docker.io"
+      when: docker_registry is not defined
+
+    - name: stop services
+      service:
+        name: "{{ item }}"
+        state: stopped
+        enabled: no
+      with_items: "{{ grafana_services }}"
+      failed_when: false
+
+    - name: remove containers
+      docker_container:
+        name: "{{ item }}"
+        state: absent
+      with_items: "{{ grafana_services }}"
+      failed_when: false
+
+    - name: remove service files
+      file:
+        name: "/etc/systemd/system/{{ item }}.service"
+        state: absent
+      with_items: "{{ grafana_services }}"
+      failed_when: false
+
+    - name: remove images
+      docker_image:
+        name: "{{ item }}"
+        state: absent
+        force_absent: yes
+      with_items:
+        - "{{ docker_registry }}/prom/prometheus"
+        - "{{ docker_registry }}/grafana/grafana"
+        - "{{ docker_registry }}/prom/alertmanager"
+      failed_when: false
+
+    - name: remove data
+      file:
+        name: "{{ item }}"
+        state: absent
+      with_items:
+        - /etc/grafana/dashboards
+        - /etc/grafana/grafana.ini
+        - /etc/grafana/provisioning
+        - /var/lib/grafana
+        - /etc/alertmanager
+        - /var/lib/alertmanager
+        - /var/lib/prometheus
+        - /etc/prometheus
+      failed_when: false
+

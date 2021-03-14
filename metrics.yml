@@ -1,0 +1,25 @@
+---
+- hosts: all
+  become: true
+  tasks:
+    - block:
+        - import_role:
+            name: container-engine
+
+- hosts: exporters
+  become: true
+  tasks:
+    - block:
+        - import_role:
+            name: node-exporter
+        - import_role:
+            name: znapzend-exporter
+
+- hosts: metrics
+  become: true
+  tasks:
+    - block:
+        - import_role:
+            name: prometheus
+        - import_role:
+            name: grafana

@@ -1,0 +1,5 @@
+[metrics]
+localhost
+
+[exporters]
+localhost

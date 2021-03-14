@@ -1,0 +1,17 @@
+groups:
+- name: zfs
+  rules:
+  - alert: ZpoolDegradedState
+    expr: node_zfs_zpool_state{state="degraded"} == 1
+    labels:
+      severity: warning
+    annotations:
+      summary: "Attention Required: {{ $labels.instance }} : zpool {{ $labels.zpool }} is in a {{ $labels.state }} state."
+      description: "Zpool:{{ $labels.zpool }} has experienced a failure but is still functioniong. The fault tolerance of the pool might be compromised, as a subsequent fault in another device might be unrecoverable"
+  - alert: ZpoolFaultedState
+    expr: node_zfs_zpool_state{state="faulted"} == 1
+    labels:
+      severity: critical
+    annotations:
+      summary: "Attention Required: {{ $labels.instance }} : zpool {{ $labels.zpool }} is in a {{ $labels.state }} state."
+      description: "Zpool:{{ $labels.zpool }} is in FAULTED state and is completely inaccessible. No data can be recovered until the necessary devices are attached or repaired"

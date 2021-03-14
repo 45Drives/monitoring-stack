@@ -1,0 +1,17 @@
+groups:
+- name: mdadm
+  rules:
+  - alert: Host RAID array is inactive
+    expr: node_md_state{state="inactive"} > 0
+    labels:
+      severity: critical
+    annotations:
+      summary: "Attention Required: {{ $labels.instance }} : mdadm RAID {{ $labels.device }} is in a {{ $labels.state }} state"
+      description: "mdadm RAID array {{ $labels.device }} is in degraded state due to one or more disks failures. Number of spare drives is insufficient to fix issue automatically"
+  - alert: Host RAID disk failure
+    expr: node_md_disks{state="failed"} > 0
+    labels:
+      severity: warning
+    annotations:
+      summary: "Attention Required: {{ $labels.instance }} : mdadm RAID {{ $labels.device }} is in a {{ $labels.state }} state"
+      description: "At least one device in mdadm RAID array on {{ $labels.instance }} failed. Array {{ $labels.device }} needs attention and possibly a disk replacment"

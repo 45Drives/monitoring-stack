@@ -1,0 +1,36 @@
+# This file is managed by ansible, don't make changes here - they will be
+# overwritten.
+[Unit]
+Description=prometheus
+{% if container_binary == 'docker' %}
+After=docker.service
+{% else %}
+After=network.target
+{% endif %}
+
+[Service]
+EnvironmentFile=-/etc/environment
+ExecStartPre=-/usr/bin/{{ container_binary }} rm -f prometheus
+ExecStart=/usr/bin/{{ container_binary }} run --rm --name=prometheus \
+  -v "{{ prometheus_conf_dir }}:/etc/prometheus:Z" \
+  -v "{{ prometheus_data_dir }}:/prometheus:Z" \
+  --net=host \
+  --user={{ prometheus_user_id }} \
+  --cpu-period={{ prometheus_container_cpu_period }} \
+  --cpu-quota={{ prometheus_container_cpu_period * prometheus_container_cpu_cores }} \
+  --memory={{ prometheus_container_memory }}GB \
+  --memory-swap={{ prometheus_container_memory * 2 }}GB \
+  {{ prometheus_container_image }} \
+  --config.file=/etc/prometheus/prometheus.yml \
+  --storage.tsdb.path=/prometheus \
+  --web.external-url=http://{{ ansible_fqdn }}:{{ prometheus_port }}/ \
+  --web.listen-address={{ ansible_default_ipv4.address }}:{{ prometheus_port }}
+ExecStop=/usr/bin/{{ container_binary }} stop prometheus
+KillMode=none
+Restart=always
+RestartSec=10s
+TimeoutStartSec=120
+TimeoutStopSec=15
+
+[Install]
+WantedBy=multi-user.target

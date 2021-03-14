@@ -1,0 +1,44 @@
+# Monitoring Stack
+
+Grafana             : Display Statistics & Metrics from database
+Alertmanager        : Query db of metrics and send alerts based on user defined rules
+Prometheus          : Collect and store metrics scraped frome exporters in database
+Node Exporter       : Export hardware and OS metrics via http endpoint
+Znapzend Exporter   : Export state information on zfs snapshots and replication tasks
+
+The services outlined above are deployed as containers using either podman or docker depending on Host OS.
+Containers are managed via systemd services and/or cockpit-podman module
+
+# Installation
+
+* Clone git repo to "/usr/share"
+```sh
+cd /usr/share/
+git clone https://github.com/45drives/monitoring-stack.git
+```
+* Included inventory file "hosts" has two groups "metrics" and "exporters"
+    * Any hosts in the "metrics" group will have prometheus,alertmanager and grafana installed
+    * Any hosts in the "exporters" group will have node_exporter and znapzend_exporter installed
+    * By default "metrics" and "exporters" is populated by localhost. This is sufficient for a single server deployment.
+        * To add multiple servers add new hosts in the "exporters" group
+        * It is possible to have the metric stack not run on the same server as the exporter services.
+
+* Configure email send/recieve setting for alertmanager in "group_vars/metrics.yml"
+
+* Default ports are defined in the table below, they can be changed in metrics.yml or exporters.yml
+
+| Default Setting          	| Value 	|
+|--------------------------	|-------	|
+| Prometheus Port          	| 9091  	|
+| Alertmanager Port        	| 9093  	|
+| Grafana Port             	| 3000  	|
+| Grafana Default User     	| admin 	|
+| Grafana Default Password 	| admin 	|
+| Node Exporter Port       	| 9100  	|
+| Znapzend Port            	| 9101  	|
+
+* Run metrics playbook
+```sh
+cd /usr/share/monitoring-stack
+ansible-playbook -i hosts metrics.yml
+```

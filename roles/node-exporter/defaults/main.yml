@@ -1,0 +1,3 @@
+container_binary: podman
+node_exporter_container_image: prom/node-exporter:latest
+node_exporter_port: 9100

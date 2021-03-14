@@ -1,0 +1,27 @@
+# This file is managed by ansible, don't make changes here - they will be
+# overwritten.
+[Unit]
+Description=znapzend_exporter
+{% if container_binary == 'docker' %}
+After=docker.service
+{% else %}
+After=network.target
+{% endif %}
+
+[Service]
+EnvironmentFile=-/etc/environment
+ExecStartPre=-/usr/bin/podman rm -f znapzend-exporter
+ExecStart=/usr/bin/podman run --rm --name=znapzend-exporter \
+  --net=host \
+  {{ znapzend_exporter_container_image }} \
+  --bindAddr=:{{ znapzend_exporter_port }}
+
+ExecStop=-/usr/bin/podman stop znapzend-exporter
+KillMode=none
+Restart=always
+RestartSec=10s
+TimeoutStartSec=120
+TimeoutStopSec=15
+
+[Install]
+WantedBy=multi-user.target
