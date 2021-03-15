@@ -3,7 +3,7 @@ prometheus_port: 9091
 prometheus_listen_address: '' # To listen on all interfaces leave this empty
 # ALERTMANAGER
 alertmanager_port: 9093
-prometheus_listen_address: '' # To listen on all interfaces leave this empty
+alertmanager_listen_address: '' # To listen on all interfaces leave this empty
 alertmanager_smtp_host: localhost
 alertmanager_smtp_port: 25
 alertmanager_send_email: 'localhost@localhost'
