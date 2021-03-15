@@ -49,5 +49,17 @@
     owner: "root"
   notify: service handler
 
+- name: open firewall ports
+  firewalld:
+    port: "{{ item }}/tcp"
+    zone: "public"
+    permanent: true
+    immediate: true
+    state: enabled
+  with_items:
+    - "{{ prometheus_port }}"
+    - "{{ alertmanager_port }}"
+    - "{{ alertmanager_cluster_port }}"
+
 - name: include setup_container.yml
   include_tasks: setup_container.yml
