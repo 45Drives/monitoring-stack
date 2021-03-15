@@ -1,5 +1,5 @@
 ---
-- name: purge node-exporter
+- name: purge exporters
   hosts:
     - all
     
