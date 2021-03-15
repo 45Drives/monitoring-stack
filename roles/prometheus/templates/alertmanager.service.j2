@@ -22,10 +22,10 @@ ExecStart=/usr/bin/{{ container_binary }} run --rm --name=alertmanager \
   --memory-swap={{ alertmanager_container_memory * 2 }}GB \
   {{ alertmanager_container_image }} \
   --config.file=/etc/alertmanager/alertmanager.yml \
-  --cluster.listen-address={{ ansible_default_ipv4.address }}:{{ alertmanager_cluster_port }} \
+  --cluster.listen-address={{ alertmanager_listen_address }}:{{ alertmanager_cluster_port }} \
   --storage.path=/alertmanager \
   --web.external-url=http://{{ ansible_fqdn }}:{{ alertmanager_port }}/ \
-  --web.listen-address={{ ansible_default_ipv4.address }}:{{ alertmanager_port }}
+  --web.listen-address={{ alertmanager_listen_address }}:{{ alertmanager_port }}
 ExecStop=/usr/bin/{{ container_binary }} stop alertmanager
 KillMode=none
 Restart=always
