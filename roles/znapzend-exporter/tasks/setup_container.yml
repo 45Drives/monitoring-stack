@@ -1,4 +1,17 @@
 ---
+- name: set fact container_binary to docker centos 7
+  set_fact: 
+    container_binary: "docker"
+  when:
+    - ansible_distribution is 'CentOS'
+    - ansible_distribution_major_version is '7'
+
+- name: set fact container_binary to docker debian
+  set_fact: 
+    container_binary: "docker"
+  when:
+    - ansible_distribution is 'Debian'
+
 - name: ship systemd service
   template:
     src: znapzend_exporter.service.j2
