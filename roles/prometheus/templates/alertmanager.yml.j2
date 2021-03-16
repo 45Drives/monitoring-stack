@@ -14,4 +14,6 @@ route:
 receivers:
 - name: email
   email_configs:
-  - to: {{ alertmanager_receive_email }}
+{% for email in alertmanager_receive_email %}
+  - to: {{ email }}
+{% endfor %}

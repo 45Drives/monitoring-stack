@@ -7,7 +7,9 @@ alertmanager_listen_address: '' # To listen on all interfaces leave this empty
 alertmanager_smtp_host: localhost
 alertmanager_smtp_port: 25
 alertmanager_send_email: 'localhost@localhost'
-alertmanager_receive_email: 'localhost@localhost'
+alertmanager_receive_email:
+  - 'localhost@localhost'
+  - 'dummy@localhost'
 alertmanager_require_tls: 'false'
 # GRAFANA
 grafana_port: 3000
