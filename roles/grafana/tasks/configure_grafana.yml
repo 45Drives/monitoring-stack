@@ -60,7 +60,6 @@
   with_items:
     - system-overview.json
     - network-overview.json
-    - mdadm-overview.json
 
 - name: copy grafana SSL certificate file
   copy:
