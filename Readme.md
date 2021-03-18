@@ -7,6 +7,7 @@
 | Prometheus        	| Collect and store metrics scraped frome exporters in database   	|
 | Node Exporter     	| Export hardware and OS metrics via http endpoint                	|
 | ZnapZend Exporter 	| Export state information on zfs snapshots and replication tasks 	|
+| Autotier Exporter 	| Export tier usage, capacity, and quota                          	|
 
 The services outlined above are deployed as containers using either podman or docker depending on Host OS.
 Containers are managed via systemd services and/or cockpit-podman module
