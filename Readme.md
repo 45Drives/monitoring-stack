@@ -38,6 +38,7 @@ git clone https://github.com/45drives/monitoring-stack.git
 | Grafana Default Password 	| admin 	|
 | Node Exporter Port       	| 9100  	|
 | Znapzend Port            	| 9101  	|
+| Autotier Port            	| 9450  	|
 
 * Run metrics playbook
 ```sh
