@@ -1,0 +1,29 @@
+---
+- name: set fact container_binary to docker centos 7
+  set_fact: 
+    container_binary: "docker"
+  when:
+    - ansible_distribution == 'CentOS'
+    - ansible_distribution_major_version == '7'
+
+- name: set fact container_binary to docker debian
+  set_fact: 
+    container_binary: "docker"
+  when:
+    - ansible_distribution == 'Debian'
+
+- name: ship systemd service
+  template:
+    src: autotier_exporter.service.j2
+    dest: "/etc/systemd/system/autotier_exporter.service"
+    owner: root
+    group: root
+    mode: 0644
+
+- name: start the autotier_exporter service
+  systemd:
+    name: autotier_exporter
+    state: started
+    enabled: yes
+    daemon_reload: yes
+  failed_when: false

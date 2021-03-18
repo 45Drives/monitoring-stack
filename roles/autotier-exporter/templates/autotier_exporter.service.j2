@@ -1,0 +1,30 @@
+# This file is managed by ansible, don't make changes here - they will be
+# overwritten.
+[Unit]
+Description=autotier_exporter
+{% if container_binary == 'docker' %}
+After=docker.service
+{% else %}
+After=network.target
+{% endif %}
+
+[Service]
+EnvironmentFile=-/etc/environment
+ExecStartPre=-/usr/bin/{{ container_binary }} rm -f autotier_exporter
+ExecStart=/usr/bin/{{ container_binary }} run --rm --name=autotier_exporter \
+  -v /opt/45drives/autotier:/opt/45drives/autotier \
+  -v /var/lib/autotier:/var/lib/autotier \
+  -v /etc/autotier.conf:/etc/autotier.conf \
+  --net=host \
+  {{ autotier_exporter_container_image }} \
+  --port {{ znapzend_exporter_port }}
+
+ExecStop=-/usr/bin/{{ container_binary }} stop autotier_exporter
+KillMode=none
+Restart=always
+RestartSec=10s
+TimeoutStartSec=120
+TimeoutStopSec=15
+
+[Install]
+WantedBy=multi-user.target
