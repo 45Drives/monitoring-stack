@@ -1,3 +1,3 @@
 container_binary: podman
-znapzend_exporter_container_image: 45drives/autotier_exporter:latest
-znapzend_exporter_port: 9450
+autotier_exporter_container_image: 45drives/autotier_exporter:latest
+autotier_exporter_port: 9450
