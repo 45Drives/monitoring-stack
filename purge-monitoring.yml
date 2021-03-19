@@ -65,7 +65,7 @@
         - remove_img
       failed_when: false
     
-     - name: disable autotier_exporter service
+    - name: disable autotier_exporter service
       service:
         name: autotier_exporter
         state: stopped
