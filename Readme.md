@@ -7,6 +7,7 @@
 | Prometheus        	| Collect and store metrics scraped frome exporters in database   	|
 | Node Exporter     	| Export hardware and OS metrics via http endpoint                	|
 | ZnapZend Exporter 	| Export state information on zfs snapshots and replication tasks 	|
+| Cephgeorep Exporter 	| Export state of cephgeorep                                      	|
 
 The services outlined above are deployed as containers using either podman or docker depending on Host OS.
 Containers are managed via systemd services and/or cockpit-podman module
@@ -38,6 +39,7 @@ git clone https://github.com/45drives/monitoring-stack.git
 | Grafana Default Password 	| admin 	|
 | Node Exporter Port       	| 9100  	|
 | Znapzend Port            	| 9101  	|
+| Cephgeorep Port          	| 9451  	|
 
 * Run metrics playbook
 ```sh
