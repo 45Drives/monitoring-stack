@@ -20,6 +20,12 @@
     group: root
     mode: 0644
 
+- name: create run path to mirror to container
+  ansible.builtin.file:
+    path: /run/cephgeorep
+    state: directory
+    mode: '0755'
+
 - name: start the cephgeorep_exporter service
   systemd:
     name: cephgeorep_exporter
