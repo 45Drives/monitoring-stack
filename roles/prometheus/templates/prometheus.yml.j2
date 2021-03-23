@@ -16,6 +16,14 @@ scrape_configs:
         labels:
           instance: "{{ hostvars[host]['ansible_nodename'] }}"
 {% endfor %}
+  - job_name: 'cephgeorep'
+    static_configs:
+{% for host in groups['all'] %}
+      - targets: ['{{ host }}:{{ cephgeorep_exporter_port }}']
+        labels:
+          instance: "{{ hostvars[host]['ansible_nodename'] }}"
+{% endfor %}
+
 alerting:
   alertmanagers:
   - scheme: http
