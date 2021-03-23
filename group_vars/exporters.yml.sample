@@ -4,3 +4,6 @@ node_exporter_port: 9100
 # Znapzend Exporter
 znapzend_exporter_container_image: ccremer/znapzend-exporter:v0.3.1
 znapzend_exporter_port: 9101
+# Cephgeorep Exporter
+cephgeorep_exporter_container_image: 45drives/cephgeorep_exporter:latest
+cephgeorep_exporter_port: 9451

@@ -65,6 +65,33 @@
         - remove_img
       failed_when: false
 
+    - name: disable cephgeorep_exporter service
+      service:
+        name: cephgeorep_exporter
+        state: stopped
+        enabled: no
+      failed_when: false
+
+    - name: remove cephgeorep_exporter container
+      docker_container:
+        name: cephgeorep_exporter
+        state: absent
+      failed_when: false
+
+    - name: remove cephgeorep_exporter service file
+      file:
+        name: /etc/systemd/system/cephgeorep_exporter.service
+        state: absent
+
+    - name: remove cephgeorep_exporter image
+      docker_image:
+        image: "{{ docker_registry }}/45drives/cephgeorep_exporter"
+        state: absent
+        force_absent: yes
+      tags:
+        - remove_img
+      failed_when: false
+
 - name: purge ceph grafana-server
   hosts: metrics
   become: true
