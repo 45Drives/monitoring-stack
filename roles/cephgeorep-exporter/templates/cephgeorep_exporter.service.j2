@@ -1,0 +1,28 @@
+# This file is managed by ansible, don't make changes here - they will be
+# overwritten.
+[Unit]
+Description=cephgeorep_exporter
+{% if container_binary == 'docker' %}
+After=docker.service
+{% else %}
+After=network.target
+{% endif %}
+
+[Service]
+EnvironmentFile=-/etc/environment
+ExecStartPre=-/usr/bin/{{ container_binary }} rm -f cephgeorep_exporter
+ExecStart=/usr/bin/{{ container_binary }} run --rm --name=cephgeorep_exporter \
+  -v /run/cephgeorep:/run/cephgeorep \
+  --net=host \
+  {{ cephgeorep_exporter_container_image }} \
+  --port {{ cephgeorep_exporter_port }}
+
+ExecStop=-/usr/bin/{{ container_binary }} stop cephgeorep_exporter
+KillMode=none
+Restart=always
+RestartSec=10s
+TimeoutStartSec=120
+TimeoutStopSec=15
+
+[Install]
+WantedBy=multi-user.target

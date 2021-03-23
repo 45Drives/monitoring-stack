@@ -1,0 +1,3 @@
+container_binary: podman
+cephgeorep_exporter_container_image: 45drives/cephgeorep_exporter:latest
+cephgeorep_exporter_port: 9451
