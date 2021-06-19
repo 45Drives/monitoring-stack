@@ -4,7 +4,7 @@
 |-------------------	|-----------------------------------------------------------------	|
 | Grafana           	| Display Statistics & Metrics from database                      	|
 | Alertmanager      	| Query db of metrics and send alerts based on user defined rules 	|
-| Prometheus        	| Collect and store metrics scraped frome exporters in database   	|
+| Prometheus        	| Collect and store metrics scraped from exporters in database   	|
 | Node Exporter     	| Export hardware and OS metrics via http endpoint                	|
 | ZnapZend Exporter 	| Export state information on zfs snapshots and replication tasks 	|
 
@@ -19,7 +19,7 @@ cd /usr/share/
 git clone https://github.com/45drives/monitoring-stack.git
 ```
 * Included inventory file "hosts" has two groups "metrics" and "exporters"
-    * All hosts in the "metrics" group will have prometheus,alertmanager and grafana installed
+    * All hosts in the "metrics" group will have prometheus, alertmanager and grafana installed
     * All hosts in the "exporters" group will have node_exporter and znapzend_exporter installed
     * By default "metrics" and "exporters" is populated by localhost. This is sufficient for a single server deployment.
         * To add multiple servers add new hosts in the "exporters" group
