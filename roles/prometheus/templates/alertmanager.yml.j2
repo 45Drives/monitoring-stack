@@ -3,7 +3,10 @@ global:
   smtp_from: {{ alertmanager_send_email }}
   smtp_require_tls: {{ alertmanager_require_tls }}
   resolve_timeout: 5m
-
+{% if alertmanager_smtp_username is defined %}
+  smtp_auth_username: {{ alertmanager_smtp_username }}
+  smtp_auth_password: {{ alertmanager_smtp_password }}
+{% endif %}
 route:
   group_by: ['alertname']
   group_wait: 10s
