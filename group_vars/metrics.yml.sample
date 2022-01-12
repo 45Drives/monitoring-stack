@@ -6,6 +6,8 @@ alertmanager_port: 9093
 alertmanager_listen_address: '' # To listen on all interfaces leave this empty
 alertmanager_smtp_host: localhost
 alertmanager_smtp_port: 25
+alertmanager_smtp_username: '' #To authenticate to local/public smtp server, when applicable
+alertmanager_smtp_password: '' 
 alertmanager_send_email: 'localhost@localhost'
 alertmanager_receive_email:
   - 'localhost@localhost'
