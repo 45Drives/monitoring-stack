@@ -6,6 +6,9 @@
     permanent: true
     immediate: true
     state: enabled
-
+- name: make collector directory
+  file:
+    path: "{{ node_exporter_collector_dir }}"
+    state: directory
 - name: include setup_container.yml
   include_tasks: setup_container.yml
