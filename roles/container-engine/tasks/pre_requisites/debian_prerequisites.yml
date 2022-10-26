@@ -30,7 +30,7 @@
   when:
     - container_package_name == 'podman'
     - ansible_distribution == 'Ubuntu'
-    - ansible_distribution_major_version != '20'
+    - ansible_distribution_major_version <= '20'
 
 - name: add podman kubic gpg key
   apt_key:
@@ -41,7 +41,7 @@
   when:
     - container_package_name == 'podman'
     - ansible_distribution == 'Ubuntu'
-    - ansible_distribution_major_version == '20'
+    - ansible_distribution_major_version <= '20'
 
 - name: add podman kubic repository
   apt_repository:
@@ -51,4 +51,4 @@
   when:
     - container_package_name == 'podman'
     - ansible_distribution == 'Ubuntu'
-    - ansible_distribution_major_version == '20'
+    - ansible_distribution_major_version <= '20'
