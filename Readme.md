@@ -53,8 +53,9 @@ ansible-playbook -i hosts purge-monitoring.yml
 # Verification
 
 To ensure monitoring stack is working as expected, simulate failure condition and you will recieve an email notification
-    * Offline a disk in your zpool
-        * Set disk as "Offline" in Houston UI, "ZFS + File Sharing"
-        * Or in cli: zpool offline tank 1-1
-    * After ~30 seconds you should see email with subject line "[FIRING:1] ZpoolDegradedState ($HOSTNAME node warning degraded $POOL_NAME)"
+
+* Offline a disk in your zpool
+    * Set disk as "Offline" in Houston UI, "ZFS + File Sharing"
+    * Or in cli: zpool offline tank 1-1
+* After ~30 seconds you should see email with subject line "[FIRING:1] ZpoolDegradedState ($HOSTNAME node warning degraded $POOL_NAME)"
 
