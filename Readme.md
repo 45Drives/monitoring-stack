@@ -11,6 +11,12 @@
 The services outlined above are deployed as containers using either podman or docker depending on Host OS.
 Containers are managed via systemd services and/or cockpit-podman module
 
+## Supported OS
+* Rocky Linux 8.X
+* Rocky Linux 9.X
+* Ubuntu 20.04
+* Ubuntu 22.04
+
 # Installation
 
 * Clone git repo to "/usr/share"
