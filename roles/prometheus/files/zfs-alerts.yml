@@ -15,3 +15,17 @@ groups:
     annotations:
       summary: "Attention Required: {{ $labels.instance }} : zpool {{ $labels.zpool }} is in a {{ $labels.state }} state."
       description: "Zpool:{{ $labels.zpool }} is in FAULTED state and is completely inaccessible. No data can be recovered until the necessary devices are attached or repaired"
+  - alert: ZFS Send Task Started
+    expr: deriv(znapzend_presend_command_started[1m]) > 0
+    labels:
+      severity: info
+    annotations:
+      summary: "ZFS Snapshot Send Started : Dataset {{ $labels.exported_job }} has started a replication task"
+      description: "Dataset:{{ $labels.exported_job }} has started a replication task from host {{ $labels.instance }} to remote destination {{ $labels.target_host }} "
+  - alert: ZFS Send Task Finished
+    expr: deriv(znapzend_presend_command_started[1m]) < 0
+    labels:
+      severity: info
+    annotations:
+      summary: "ZFS Snapshot Send finished: Dataset {{ $labels.exported_job }} has finished a replication task"
+      description: "Dataset:{{ $labels.exported_job }} has finished a replication task from host {{ $labels.instance }} to remote destination {{ $labels.target_host }} "
