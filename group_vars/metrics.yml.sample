@@ -1,6 +1,8 @@
 # PROMETHEUS
 prometheus_port: 9091
 prometheus_listen_address: '' # To listen on all interfaces leave this empty
+prometheus_data_dir: /var/lib/prometheus
+prometheus_storage_tsdb_retention_time: "30d"
 # ALERTMANAGER
 alertmanager_port: 9093
 alertmanager_listen_address: '' # To listen on all interfaces leave this empty
