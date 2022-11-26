@@ -7,6 +7,7 @@ Description=zfs_exporter
 EnvironmentFile=-/etc/environment
 ExecStartPre=-/usr/bin/podman rm -f zfs_exporter
 ExecStart=/usr/bin/podman run --rm --name=zfs_exporter \
+  --privileged \
   --net=host \
   {{ zfs_exporter_container_image }} \
 {% if zfs_exporter_enable_snapshot_collection %}
