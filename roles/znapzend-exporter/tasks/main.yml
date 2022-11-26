@@ -9,3 +9,24 @@
 
 - name: include setup_container.yml
   include_tasks: setup_container.yml
+
+- name: install helper scripts
+  block:
+    - name: create znapzend dir
+      ansible.builtin.file:
+        path: /opt/znapzend
+        state: directory
+        mode: '0755'
+    
+  - name: Copy helper scripts
+    ansible.builtin.copy:
+      src: "{{ item }}"
+      dest: /etc/foo.conf
+      owner: foo
+      group: foo
+      mode: '0774'
+    loop:
+      - pre_send_cmd.sh
+      - post_send_cmd.sh
+      - pre_snap_cmd.sh
+      - post_send_cmd.sh
