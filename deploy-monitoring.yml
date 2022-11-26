@@ -13,7 +13,10 @@
         - import_role:
             name: node-exporter
         - import_role:
+            name: zfs-exporter
+        - import_role:
             name: znapzend-exporter
+
 
 - hosts: metrics
   become: true
