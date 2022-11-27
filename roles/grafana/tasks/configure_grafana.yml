@@ -49,6 +49,7 @@
   with_items:
     - zfs-overview.json
     - zfs-detailed-stats.json
+    - zfs-replication-overview.json
 
 - name: Write System dashboard files
   copy:
