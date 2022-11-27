@@ -3,7 +3,7 @@
 EXPORTER_HOST="localhost"
 EXPORTER_PORT="9101"
 DATASET_NAME="$1"
-REMOTE_HOSTNAME="$1"
+REMOTE_HOSTNAME="$2"
 
 if [ $# -eq 0 ]; then
     echo "Dataset name required. ex) storage/dataset1"
