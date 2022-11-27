@@ -21,12 +21,12 @@
     - name: Copy helper scripts
       ansible.builtin.copy:
         src: "{{ item }}"
-        dest: /etc/foo.conf
-        owner: foo
-        group: foo
+        dest: /opt/znapzend/{{ item }}
+        owner: root
+        group: root
         mode: '0774'
       loop:
         - pre_send_cmd.sh
         - post_send_cmd.sh
         - pre_snap_cmd.sh
-        - post_send_cmd.sh
+        - post_snap_cmd.sh
