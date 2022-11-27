@@ -2,12 +2,11 @@
 
 EXPORTER_HOST="localhost"
 EXPORTER_PORT="9101"
-DATASET_NAME=$1
-REMOTE_HOSTNAME="remote-host"
+DATASET_NAME="$1"
 
-if[ $# -eq 0 ]; then
+if [ $# -eq 0 ]; then
     echo "Dataset name required. ex) storage/dataset1"
     exit 1
 fi
 
-echo "/usr/bin/curl -sS "$EXPORTER_HOST":"$EXPORTER_PORT"/presend/"$DATASET_NAME"?TargetHost=$REMOTE_HOSTNAME
+/usr/bin/curl -sS $EXPORTER_HOST:$EXPORTER_PORT/presend/$DATASET_NAME?TargetHost=$REMOTE_HOSTNAME
