@@ -1,0 +1,1 @@
+*/1 * * * * root /bin/bash /opt/znapzend/error_logger 60

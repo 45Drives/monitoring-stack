@@ -30,3 +30,12 @@
         - post_send_cmd.sh
         - pre_snap_cmd.sh
         - post_snap_cmd.sh
+        - error_logger
+
+    - name: Copy znapzend cron file
+      ansible.builtin.copy:
+        src: "error_logger"
+        dest: /etc/cron.d/error_logger
+        owner: root
+        group: root
+        mode: '0774'
