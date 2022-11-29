@@ -29,3 +29,10 @@ groups:
     annotations:
       summary: "ZFS Snapshot Send finished: Dataset {{ $labels.exported_job }} has finished a replication task"
       description: "Dataset:{{ $labels.exported_job }} has finished a replication task from host {{ $labels.instance }} to remote destination {{ $labels.target_host }} "
+  - alert: ZFS Send Task Failed
+    expr: znapzend_job_failed == 1
+    labels:
+      severity: warn
+    annotations:
+      summary: "ZFS Snapshot Send failed: Dataset {{ $labels.source_dataset }} has failed to send
+      description: "Dataset:{{ $labels.source_dataset }} has failed its replication task from host {{ $labels.instance }} to remote destination {{ $labels.target_host }}. Please consult "journalctl -u znapzend" on host {{ $labels.instance }} for reason"
