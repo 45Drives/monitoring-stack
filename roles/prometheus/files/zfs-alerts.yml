@@ -34,5 +34,5 @@ groups:
     labels:
       severity: warn
     annotations:
-      summary: "ZFS Snapshot Send failed: Dataset {{ $labels.source_dataset }} has failed to send
+      summary: "ZFS Snapshot Send failed: Dataset {{ $labels.source_dataset }} has failed to send"
       description: "Dataset:{{ $labels.source_dataset }} has failed its replication task from host {{ $labels.instance }} to remote destination {{ $labels.target_host }}. Please consult "journalctl -u znapzend" on host {{ $labels.instance }} for reason"
