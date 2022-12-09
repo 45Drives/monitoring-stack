@@ -1,0 +1,10 @@
+[Unit]
+Description=Starts zfs replication jobs
+Requires=zfs-sync.service
+
+[Timer]
+Unit=zfs-sync.service
+OnCalendar=*-*-* 19:00:00
+
+[Install]
+WantedBy=timers.target

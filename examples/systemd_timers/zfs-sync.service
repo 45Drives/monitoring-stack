@@ -1,0 +1,9 @@
+[Unit]
+Description=Starts zfs replication jobs
+Wants=zfs-sync.timer
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/znapzend --runonce --logto=syslog::daemon
+[Install]
+WantedBy=multi-user.target
