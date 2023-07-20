@@ -15,3 +15,12 @@ groups:
     annotations:
       summary: "Attention Required: {{ $labels.instance }} : zpool {{ $labels.zpool }} is in a {{ $labels.state }} state."
       description: "Zpool:{{ $labels.zpool }} is in FAULTED state and is completely inaccessible. No data can be recovered until the necessary devices are attached or repaired"
+  - alert: Znapzend Service Failed
+    expr: node_systemd_unit_state{name="znapzend.service",state="active"} == 0
+    for: 1m
+    labels: 
+      severity: critical
+    annotations:
+      summary: "Znapzend systemd service failed or is not running" 
+      description: "Znapzend service is not running, check systemctl status or journalctl for more infrmation"
+      
