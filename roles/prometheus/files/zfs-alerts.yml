@@ -43,4 +43,4 @@ groups:
       severity: critical
     annotations:
       summary: "Znapzend systemd service failed or is not running" 
-      description: "Znapzend service is not running, check systemctl status or journalctl for more infrmation"    
+      description: "Znapzend service is not running, check systemctl status or journalctl for more information"    
