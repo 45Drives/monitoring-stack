@@ -1,0 +1,4 @@
+container_binary: podman
+zfs_exporter_container_image: docker.io/45drives/zfs_exporter:v2.2.5
+zfs_exporter_port: 9134
+zfs_exporter_enable_snapshot_collection: false

@@ -1,0 +1,11 @@
+---
+- name: open zfs_exporter firewall port
+  firewalld:
+    port: "{{ zfs_exporter_port }}/tcp"
+    zone: "public"
+    permanent: true
+    immediate: true
+    state: enabled
+
+- name: include setup_container.yml
+  include_tasks: setup_container.yml

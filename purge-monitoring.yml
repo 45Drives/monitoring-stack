@@ -38,6 +38,33 @@
         - remove_img
       failed_when: false
 
+    - name: disable zfs_exporter service
+      service:
+        name: zfs_exporter
+        state: stopped
+        enabled: no
+      failed_when: false
+
+    - name: remove zfs-exporter container
+      docker_container:
+        name: znapzend_exporter
+        state: absent
+      failed_when: false
+
+    - name: remove zfs_exporter service file
+      file:
+        name: /etc/systemd/system/zfs_exporter.service
+        state: absent
+
+    - name: remove zfs-exporter image
+      docker_image:
+        image: "{{ docker_registry }}/45drives/zfs_exporter"
+        state: absent
+        force_absent: yes
+      tags:
+        - remove_img
+      failed_when: false
+
     - name: disable znapzend_exporter service
       service:
         name: znapzend_exporter

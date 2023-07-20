@@ -9,10 +9,20 @@ scrape_configs:
   - job_name: 'prometheus'
     static_configs:
       - targets: ['localhost:{{ prometheus_port }}']
+  - job_name: 'zfsreplication'
+    static_configs:
+      - targets: ['localhost:{{ znapzend_exporter_port }}']
   - job_name: 'node'
     static_configs:
 {% for host in groups['all'] %}
       - targets: ['{{ host }}:9100']
+        labels:
+          instance: "{{ hostvars[host]['ansible_nodename'] }}"
+{% endfor %}
+  - job_name: 'zfs'
+    static_configs:
+{% for host in groups['all'] %}
+      - targets: ['{{ host }}:{{ zfs_exporter_port }}']
         labels:
           instance: "{{ hostvars[host]['ansible_nodename'] }}"
 {% endfor %}

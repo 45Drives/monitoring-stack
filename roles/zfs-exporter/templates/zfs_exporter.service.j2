@@ -1,0 +1,27 @@
+# This file is managed by ansible, don't make changes here - they will be
+# overwritten.
+[Unit]
+Description=zfs_exporter
+
+[Service]
+EnvironmentFile=-/etc/environment
+ExecStartPre=-/usr/bin/podman rm -f zfs_exporter
+ExecStart=/usr/bin/podman run --rm --name=zfs_exporter \
+  --privileged \
+  --net=host \
+  {{ zfs_exporter_container_image }} \
+{% if zfs_exporter_enable_snapshot_collection %}
+  --collector.dataset-snapshot \
+{% endif %}
+  --web.listen-address=":{{ zfs_exporter_port }}" \
+  --properties.dataset-filesystem="available,logicalused,quota,referenced,used,usedbydataset,usedbysnapshots,written"
+
+ExecStop=-/usr/bin/podman stop zfs-exporter
+KillMode=none
+Restart=always
+RestartSec=10s
+TimeoutStartSec=120
+TimeoutStopSec=15
+
+[Install]
+WantedBy=multi-user.target

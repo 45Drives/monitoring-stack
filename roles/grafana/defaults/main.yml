@@ -7,7 +7,7 @@ grafana_anonymous_access: 'true'
 grafana_protocol: 'http'
 grafana_crt: ''
 grafana_key: ''
-grafana_container_image: "grafana/grafana:latest"
+grafana_container_image: "docker.io/grafana/grafana:6.7.4"
 grafana_container_cpu_period: 100000
 grafana_container_cpu_cores: 2
 grafana_container_memory: 4 # container_memory is in GB

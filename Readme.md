@@ -11,6 +11,12 @@
 The services outlined above are deployed as containers using either podman or docker depending on Host OS.
 Containers are managed via systemd services and/or cockpit-podman module
 
+## Supported OS
+* Rocky Linux 8.X
+* Rocky Linux 9.X
+* Ubuntu 20.04
+* Ubuntu 22.04
+
 # Installation
 
 * Clone git repo to "/usr/share"
@@ -53,8 +59,9 @@ ansible-playbook -i hosts purge-monitoring.yml
 # Verification
 
 To ensure monitoring stack is working as expected, simulate failure condition and you will recieve an email notification
-    * Offline a disk in your zpool
-        * Set disk as "Offline" in Houston UI, "ZFS + File Sharing"
-        * Or in cli: zpool offline tank 1-1
-    * After ~30 seconds you should see email with subject line "[FIRING:1] ZpoolDegradedState ($HOSTNAME node warning degraded $POOL_NAME)"
+
+* Offline a disk in your zpool
+    * Set disk as "Offline" in Houston UI, "ZFS + File Sharing"
+    * Or in cli: zpool offline tank 1-1
+* After ~30 seconds you should see email with subject line "[FIRING:1] ZpoolDegradedState ($HOSTNAME node warning degraded $POOL_NAME)"
 

@@ -15,12 +15,24 @@ groups:
     annotations:
       summary: "Attention Required: {{ $labels.instance }} : zpool {{ $labels.zpool }} is in a {{ $labels.state }} state."
       description: "Zpool:{{ $labels.zpool }} is in FAULTED state and is completely inaccessible. No data can be recovered until the necessary devices are attached or repaired"
-  - alert: Znapzend Service Failed
-    expr: node_systemd_unit_state{name="znapzend.service",state="active"} == 0
-    for: 1m
-    labels: 
-      severity: critical
+  - alert: ZFS Send Task Started
+    expr: deriv(znapzend_presend_command_started[1m]) > 0
+    labels:
+      severity: info
     annotations:
-      summary: "Znapzend systemd service failed or is not running" 
-      description: "Znapzend service is not running, check systemctl status or journalctl for more infrmation"
-      
+      summary: "ZFS Snapshot Send Started : Dataset {{ $labels.exported_job }} has started a replication task"
+      description: "Dataset:{{ $labels.exported_job }} has started a replication task from host {{ $labels.instance }} to remote destination {{ $labels.target_host }} "
+  - alert: ZFS Send Task Finished
+    expr: deriv(znapzend_presend_command_started[1m]) < 0
+    labels:
+      severity: info
+    annotations:
+      summary: "ZFS Snapshot Send finished: Dataset {{ $labels.exported_job }} has finished a replication task"
+      description: "Dataset:{{ $labels.exported_job }} has finished a replication task from host {{ $labels.instance }} to remote destination {{ $labels.target_host }} "
+  - alert: ZFS Send Task Failed
+    expr: znapzend_job_failed == 1
+    labels:
+      severity: warn
+    annotations:
+      summary: "ZFS Snapshot Send failed: Dataset {{ $labels.source_dataset }} has failed to send"
+      description: "Dataset:{{ $labels.source_dataset }} has failed its replication task from host {{ $labels.instance }} to remote destination {{ $labels.target_host }}. Please consult 'journalctl -u znapzend' on host {{ $labels.instance }} for reason"

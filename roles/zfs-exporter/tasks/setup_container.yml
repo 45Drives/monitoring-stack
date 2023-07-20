@@ -1,0 +1,16 @@
+---
+- name: ship systemd service
+  template:
+    src: zfs_exporter.service.j2
+    dest: "/etc/systemd/system/zfs_exporter.service"
+    owner: root
+    group: root
+    mode: 0644
+
+- name: start the zfs_exporter service
+  systemd:
+    name: zfs_exporter
+    state: started
+    enabled: yes
+    daemon_reload: yes
+  failed_when: false

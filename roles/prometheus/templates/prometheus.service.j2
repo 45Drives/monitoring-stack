@@ -23,6 +23,9 @@ ExecStart=/usr/bin/{{ container_binary }} run --rm --name=prometheus \
   {{ prometheus_container_image }} \
   --config.file=/etc/prometheus/prometheus.yml \
   --storage.tsdb.path=/prometheus \
+{% if prometheus_storage_tsdb_retention_time is defined %}
+  --storage.tsdb.retention.time={{ prometheus_storage_tsdb_retention_time }} \
+{% endif %}
   --web.external-url=http://{{ ansible_fqdn }}:{{ prometheus_port }}/ \
   --web.listen-address={{ prometheus_listen_address }}:{{ prometheus_port }}
 ExecStop=/usr/bin/{{ container_binary }} stop prometheus

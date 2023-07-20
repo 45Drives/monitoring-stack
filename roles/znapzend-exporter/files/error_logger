@@ -1,0 +1,70 @@
+#!/bin/bash
+
+reset_exporter(){
+    /opt/znapzend/post_send_cmd.sh $1 $2
+}
+
+reset_log(){
+    echo "" > /opt/znapzend/error.log
+}
+
+OFFSET=$1
+
+if [ $# -eq 0 ]; then
+    OFFSET="60"
+fi
+
+# Grab Current Time
+NOW_EPOCH=$(date +%s)
+PAST_EPOCH=$(( NOW_EPOCH - OFFSET ))
+PAST=$(date -d @$PAST_EPOCH +"%Y-%m-%d %H:%M:%S")
+
+reset_log
+
+#sleep 5 # sleep for 5 seconds before we grab the log 
+# grab journalctl of znapzend --since time above --no-pager
+LOG=$(journalctl -u znapzend --since "$PAST" -o cat --no-pager)
+
+ERROR_COUNT=0
+
+#sleep 5 # sleep for 5 seconds so we dont miss
+
+echo "# HELP znapzend_job_failed Current status of znapzend replication job (0 = not failed, 1 = failed) INIT" > /var/lib/node_exporter/znapzend_monitor.prom.tmp
+
+# loop through LOG line by line
+echo "$LOG" | while read line ; do
+    if echo "$line" | grep -v "+-->" | grep -q "ERROR: cannot send snapshots" ; then # If ERROR found
+        #ERROR: cannot send snapshots from storage/Projects to backup/Projects on root@smb-nfs-01
+        REMOTE_DATASET=$(echo $line | awk '{print $8}') # Get dataset name
+        REMOTE_HOST=$(echo $line | awk '{print $10}') # get destination host
+        SOURCE_DATASET=$(echo $line | awk '{print $6}')
+        echo "znapzend_job_failed{target_host=\"$REMOTE_HOST\",target_dataset=\"$REMOTE_DATASET\",source_dataset=\"$SOURCE_DATASET\"} 1" >> /var/lib/node_exporter/znapzend_monitor.prom.tmp
+        reset_exporter "$SOURCE_DATASET" "$REMOTE_HOST" # Fire reset command for exporter
+        let ERROR_COUNT=$ERROR_COUNT+1
+    elif echo "$line" | grep -v "+-->" | grep -q "ERROR: snapshot(s) exist on destination" ; then 
+        #ERROR: snapshot(s) exist on destination, but no common found on source: storage/Projects and destination: root@smb-nfs-01:backup/Projects clean up destination root@smb-nfs-01:backup/Projects (i.e. destroy existing snapshots)
+        REMOTE=$(echo $line | awk '{print $15}') # root@smb-nfs-01:backup/Projects
+        REMOTE_HOST=$(echo $REMOTE | cut -d: -f1) 
+        REMOTE_DATASET=$(echo $REMOTE | cut -d: -f2)
+        SOURCE_DATASET=$(echo $line | awk '{print $12}')
+        echo "znapzend_job_failed{target_host=\"$REMOTE_HOST\",target_dataset=\"$REMOTE_DATASET\",source_dataset=\"$SOURCE_DATASET\"} 1" >> /var/lib/node_exporter/znapzend_monitor.prom.tmp
+        reset_exporter "$SOURCE_DATASET" "$REMOTE_HOST" 
+        let ERROR_COUNT=$ERROR_COUNT+1
+    fi
+done
+
+# if [ "$ERROR_COUNT" -eq "0" ] ; then
+#     # if any errors encountered reset all znapzend_fail values to 0
+#     echo "# HELP znapzend_job_failed Current status of znapzend replication job (0 = not failed, 1 = failed) RESET" > /var/lib/node_exporter/znapzend_monitor.prom.tmp
+#     cat /var/lib/node_exporter/znapzend_monitor.prom | while read -r line; do
+#         if [ "$(echo "$line" | awk '{print $2}')" == "HELP" ] ; then
+#             echo "# HELP znapzend_job_failed Current status of znapzend replication job (0 = not failed, 1 = failed) RESET" > /var/lib/node_exporter/znapzend_monitor.prom.tmp
+#         elif [ "$(echo "$line" | awk '{print $2}')" -eq "1" ] ; then
+#             echo "${line/%1/0}" >> /var/lib/node_exporter/znapzend_monitor.prom.tmp
+#         else [ "$(echo "$line" | awk '{print $2}')" -eq "0" ]
+#             echo "$line" >> /var/lib/node_exporter/znapzend_monitor.prom.tmp
+#         fi
+#     done
+# fi
+
+mv /var/lib/node_exporter/znapzend_monitor.prom.tmp /var/lib/node_exporter/znapzend_monitor.prom
