@@ -1,4 +1,4 @@
 container_binary: podman
-node_exporter_container_image: "docker.io/prom/node-exporter:v1.4.0"
+node_exporter_container_image: "docker.io/prom/node-exporter:latest"
 node_exporter_port: 9100
 node_exporter_collector_dir: /var/lib/node_exporter
